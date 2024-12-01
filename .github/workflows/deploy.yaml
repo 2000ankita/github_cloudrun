@@ -30,7 +30,7 @@ jobs:
 
       # Debug: Print project ID to check if it's being set correctly
       - name: Debug project ID
-        run: echo "Project ID is: ${{ secrets.GCP_PROJECT_ID }}"
+        run: echo "Project ID is:${{ secrets.GCP_PROJECT_ID }}"
 
       # Build the Docker image
       - name: Build Docker image
