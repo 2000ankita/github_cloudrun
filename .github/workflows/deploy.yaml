@@ -1,0 +1,39 @@
+name: Deploy to Cloud Run
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v1
+      with:
+        version: 'latest'
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        project_id: ${{ secrets.GCP_PROJECT }}
+
+    - name: Configure Docker for Artifact Registry
+      run: gcloud auth configure-docker us-central1-docker.pkg.dev
+
+    - name: Build and push Docker image
+      run: |
+        IMAGE="us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/my-repo/my-app:latest"
+        docker build -t $IMAGE .
+        docker push $IMAGE
+
+    - name: Deploy to Cloud Run
+      run: |
+        IMAGE="us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/my-repo/my-app:latest"
+        gcloud run deploy my-cloud-run-service \
+          --image $IMAGE \
+          --platform managed \
+          --region us-central1 \
+          --allow-unauthenticated
