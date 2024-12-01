@@ -26,6 +26,10 @@ jobs:
         run: |
           gcloud auth configure-docker --quiet
 
+      # Debug: Print project ID to check if it's being set correctly
+      - name: Debug project ID
+        run: echo "Project ID is: ${{ secrets.GCP_PROJECT_ID }}"
+
       # Build the Docker image
       - name: Build Docker image
         run: |
@@ -35,4 +39,3 @@ jobs:
       - name: Push Docker image to GCR
         run: |
           docker push us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/my-repo/hello-world:${{ github.sha }}
-##
