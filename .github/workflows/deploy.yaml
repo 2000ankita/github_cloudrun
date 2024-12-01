@@ -27,9 +27,10 @@ jobs:
           gcloud auth configure-docker --quiet
 
       # Debug: Print project ID to check if it's being set correctly
-      - name: Debug project ID
-        run: echo "Project ID is: ${{ secrets.GCP_PROJECT }}"  # Debugging the correct secret
+      - name: Debug GCP_PROJECT Secret
+        run: echo "GCP_PROJECT is ${{ secrets.GCP_PROJECT }}"
 
+    
       # Build the Docker image
       - name: Build Docker image
         run: |
