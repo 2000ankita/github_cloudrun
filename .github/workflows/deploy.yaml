@@ -35,4 +35,3 @@ jobs:
       - name: Push Docker image to GCR
         run: |
           docker push us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/my-repo/hello-world:${{ github.sha }}
-
